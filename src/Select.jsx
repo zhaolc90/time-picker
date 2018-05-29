@@ -33,13 +33,23 @@ class Select extends Component {
     onMouseEnter: PropTypes.func,
   };
 
-  state = {
-    active: false,
-  };
+  constructor(props) {
+    super(props) 
+    this.state = {
+      active: false,
+      options: props.options,
+    };
+  }
 
   componentDidMount() {
     // jump to selected option
     this.scrollToSelected(0);
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selectedIndex === this.props.selectedIndex) {
+      return false
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -56,9 +66,13 @@ class Select extends Component {
 
   getOptions() {
     const { options, selectedIndex, prefixCls } = this.props;
-    return options.map((item, index) => {
+    var head = options.concat()
+    var tail = head.splice(selectedIndex)
+    const newOptions = tail.concat(head)
+
+    return newOptions.map((item, index) => {
       const cls = classnames({
-        [`${prefixCls}-select-option-selected`]: selectedIndex === index,
+        [`${prefixCls}-select-option-selected`]: index === 0,
         [`${prefixCls}-select-option-disabled`]: item.disabled,
       });
       let onclick = null;
@@ -83,10 +97,7 @@ class Select extends Component {
     if (!list) {
       return;
     }
-    let index = this.props.selectedIndex;
-    if (index < 0) {
-      index = 0;
-    }
+    let index = 0;
     const topOption = list.children[index];
     const to = topOption.offsetTop;
     scrollTo(select, to, duration);
