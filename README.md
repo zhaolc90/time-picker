@@ -1,3 +1,10 @@
+# change Select for a better user experience
+![before](./before.png)
+![after](./after.png)
+
+after select, the select one will go top of list.
+#
+keep old doc
 # TimePicker
 
 React TimePicker
